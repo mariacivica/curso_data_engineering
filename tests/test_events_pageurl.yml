@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: events
+    columns:
+      - name: page_url
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "page_url LIKE 'https://%'"

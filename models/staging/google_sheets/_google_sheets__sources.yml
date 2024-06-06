@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+
+  - name: google_sheets # Nombre de la carpeta en el dbt
+    schema: google_sheets # Nombre del esquema en el snowflake
+    database: ALUMNO29_DEV_BRONZE_DB # this is the name of our database
+
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+    freshness:
+      warn_after: {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
+
+    tables:
+
+      - name: budget
+        loaded_at_field: _fivetran_synced
+        columns:
+          - name: _row
+          - name: product_id
+          - name: quantity
+          - name: month
+          - name: _fivetran_synced
