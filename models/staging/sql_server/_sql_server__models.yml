@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_silver_dbo__addresses
+  - name: stg_sql_server_dbo__addresses
     columns:
       - name: ADDRESS_ID
         tests:
@@ -20,7 +20,7 @@ models:
       - name: _FIVETRAN_DELETED
       - name: _fivetran_synced
 
-  - name: stg_silver_dbo__events
+  - name: stg_sql_server_dbo__events
     columns:
       - name: EVENT_ID
         tests:
@@ -36,13 +36,13 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('stg_silver_dbo__users')
+              to: ref('stg_sql_server_dbo__users')
               field: USER_ID
       - name: PRODUCT_ID
         tests:
           - not_null
           - relationships:
-              to: ref('stg_silver_dbo__products')
+              to: ref('stg_sql_server_dbo__products')
               field: PRODUCT_ID
       - name: SESSION_ID
       - name: CREATED_AT
@@ -52,19 +52,19 @@ models:
       - name: _FIVETRAN_DELETED
       - name: _fivetran_synced
 
-  - name: stg_silver_dbo__order_items
+  - name: stg_sql_server_dbo__order_items
     columns:
       - name: ORDER_ID
         tests:
           - not_null
           - relationships:
-              to: ref('stg_silver_dbo__orders')
+              to: ref('stg_sql_server_dbo__orders')
               field: ORDER_ID
       - name: PRODUCT_ID
         tests:
           - not_null
           - relationships:
-              to: ref('stg_silver_dbo__products')
+              to: ref('stg_sql_server_dbo__products')
               field: PRODUCT_ID
       - name: QUANTITY
         tests:
@@ -72,7 +72,7 @@ models:
       - name: _FIVETRAN_DELETED
       - name: _fivetran_synced
 
-  - name: stg_silver_dbo__orders
+  - name: stg_sql_server_dbo__orders
     columns:
       - name: ORDER_ID
         tests:
@@ -84,7 +84,7 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('stg_silver_dbo__addresses')
+              to: ref('stg_sql_server_dbo__addresses')
               field: ADDRESS_ID
       - name: CREATED_AT
         tests:
@@ -92,7 +92,7 @@ models:
       - name: PROMOS_ID
         tests:
           - relationships:
-              to: ref('stg_silver_dbo__promos')
+              to: ref('stg_sql_server_dbo__promos')
               field: PROMOS_ID
       - name: ESTIMATED_DELIVERY_AT
       - name: ORDER_COST
@@ -100,7 +100,7 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('stg_silver_dbo__users')
+              to: ref('stg_sql_server_dbo__users')
               field: USER_ID
       - name: ORDER_TOTAL
       - name: DELIVERED_AT
@@ -109,7 +109,7 @@ models:
       - name: _FIVETRAN_DELETED
       - name: _fivetran_synced
 
-  - name: stg_silver_dbo__products
+  - name: stg_sql_server_dbo__products
     columns:
       - name: PRODUCT_ID
         tests:
@@ -125,7 +125,7 @@ models:
       - name: _FIVETRAN_DELETED
       - name: _fivetran_synced
 
-  - name: stg_silver_dbo__promos
+  - name: stg_sql_server_dbo__promos
     columns:
       - name: PROMO_ID
         tests:
@@ -139,7 +139,7 @@ models:
       - name: _FIVETRAN_DELETED
       - name: _fivetran_synced
 
-  - name: stg_silver_dbo__users
+  - name: stg_sql_server_dbo__users
     columns:
       - name: USER_ID
         tests:
@@ -150,7 +150,7 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('stg_silver_dbo__addresses')
+              to: ref('stg_sql_server_dbo__addresses')
               field: ADDRESS_ID
       - name: LAST_NAME
         tests:

@@ -1,8 +1,8 @@
 -- Una macro es un test generico que se puede reutilizar --
 
-{% set event_types = obtener_valores(ref("stg_silver_dbo__events"), "event_type") %}
+{% set event_types = obtener_valores(ref("stg_sql_server_dbo__events"), "event_type") %}
 with
-    stg_events as (select * from {{ ref("stg_silver_dbo__events") }}),
+    stg_events as (select * from {{ ref("stg_sql_server_dbo__events") }}),
 
     renamed_casted as (
         select

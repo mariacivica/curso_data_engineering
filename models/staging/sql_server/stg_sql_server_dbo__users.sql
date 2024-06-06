@@ -32,7 +32,7 @@ renamed_casted AS (
         SELECT
             USER_ID
             , COUNT(ORDER_ID) AS TOTAL_ORDERS_UPDATE
-        FROM {{ ref('stg_silver_dbo__orders') }}
+        FROM {{ ref('stg_sql_server_dbo__orders') }}
         GROUP BY USER_ID
     )
 
