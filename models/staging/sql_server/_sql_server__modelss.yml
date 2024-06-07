@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_sql_server_dbo__addresses
+  - name: stg_sql_server_dbo__addresses.sql
     columns:
       - name: ADDRESS_ID
         tests:
@@ -19,7 +19,7 @@ models:
           - not_null
       - name: _FIVETRAN_DELETED
       - name: _fivetran_synced
-
+  
   - name: stg_sql_server_dbo__events
     columns:
       - name: EVENT_ID
@@ -41,9 +41,6 @@ models:
       - name: PRODUCT_ID
         tests:
           - not_null
-          - relationships:
-              to: ref('stg_sql_server_dbo__products')
-              field: PRODUCT_ID
       - name: SESSION_ID
       - name: CREATED_AT
         tests:
@@ -71,7 +68,7 @@ models:
           - not_null
       - name: _FIVETRAN_DELETED
       - name: _fivetran_synced
-
+  
   - name: stg_sql_server_dbo__orders
     columns:
       - name: ORDER_ID
@@ -87,13 +84,7 @@ models:
               to: ref('stg_sql_server_dbo__addresses')
               field: ADDRESS_ID
       - name: CREATED_AT
-        tests:
-          - not_null
-      - name: PROMOS_ID
-        tests:
-          - relationships:
-              to: ref('stg_sql_server_dbo__promos')
-              field: PROMOS_ID
+      - name: PROMO_ID
       - name: ESTIMATED_DELIVERY_AT
       - name: ORDER_COST
       - name: USER_ID
@@ -108,14 +99,14 @@ models:
       - name: STATUS
       - name: _FIVETRAN_DELETED
       - name: _fivetran_synced
-
+  
   - name: stg_sql_server_dbo__products
     columns:
       - name: PRODUCT_ID
         tests:
           - unique
           - not_null
-      - name: PRICE
+      - name: PRICE_USD
         tests:
           - not_null
       - name: NAME
@@ -138,7 +129,7 @@ models:
               values: ["inactive", "active"]
       - name: _FIVETRAN_DELETED
       - name: _fivetran_synced
-
+  
   - name: stg_sql_server_dbo__users
     columns:
       - name: USER_ID

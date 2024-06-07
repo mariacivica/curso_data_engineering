@@ -9,10 +9,6 @@ WITH src_orders AS (
     FROM {{source('sql_server', 'orders')}}
     ),
 
-
--- A continuación se muestra un ejemplo sencillo de cómo podría empezar a ser una tabla orders
--- Estamos uniendo datos para traer todo lo que necesitamos saber sobre un pedido
-
 renamed_casted AS (
     SELECT
         ORDER_ID
