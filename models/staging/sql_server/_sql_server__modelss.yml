@@ -42,7 +42,7 @@ models:
         tests:
           - not_null
       - name: SESSION_ID
-      - name: CREATED_AT
+      - name: CREATED_AT_UTC
         tests:
           - not_null
       - name: ORDER_ID
@@ -99,7 +99,7 @@ models:
       - name: STATUS
       - name: _FIVETRAN_DELETED
       - name: _fivetran_synced
-  
+      
   - name: stg_sql_server_dbo__products
     columns:
       - name: PRODUCT_ID

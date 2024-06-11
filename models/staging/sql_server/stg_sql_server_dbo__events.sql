@@ -23,7 +23,7 @@ renamed_casted AS (
                 WHEN left(PAGE_URL, 8) = 'https://' then true
                 ELSE FALSE
             END AS IS_VALID_PAGE_URL
-        , CONVERT_TIMEZONE('UTC', CREATED_AT) AS CREATED_AT
+        , CONVERT_TIMEZONE('UTC', CREATED_AT) AS CREATED_AT_UTC
         , coalesce(_FIVETRAN_DELETED, false) as _fivetran_deleted
         , CONVERT_TIMEZONE('UTC', _fivetran_synced) AS _fivetran_synced_utc
     FROM src_events
