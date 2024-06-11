@@ -18,88 +18,185 @@ sources:
     tables:
 
       - name: addresses
+        description: "Tabla direcciones unicas de la fuente en crudo"
         loaded_at_field: _fivetran_synced
         columns:
           - name: ADDRESS_ID
+            data_type: varchar
+            description: "Identificador unico de una direccion"
           - name: ZIPCODE
+            data_type: number
+            description: "Codigo postal de la direccion"
           - name: COUNTRY
+            data_type: varchar
+            description: "Pais en el que se encuentra nuestra direccion"
           - name: ADDRESS
+            data_type: varchar
+            description: "Nombre de la direccion"
           - name: STATE
+            data_type: varchar
+            description: "Estado donde se encuentra la direccion"
           - name: _FIVETRAN_DELETED
           - name: _fivetran_synced
 
       - name: events
+        description: "Tabla de eventos unicos de la fuente en crudo"
         loaded_at_field: _fivetran_synced
         columns:
           - name: EVENT_ID
+            data_type: varchar
+            description: "Identificador unico de un evento"
           - name: PAGE_URL
+            data_type: varchar
+            description: "Direccion url del evento"
           - name: EVENT_TYPE
+            data_type: varchar
+            description: "Tipo de evento realizado"
           - name: USER_ID
+            data_type: varchar
+            description: "Usuario que ha realizado el tipo de evento"
           - name: PRODUCT_ID
+            data_type: varchar
+            description: "Identificador de producto para nuestro evento"
           - name: SESSION_ID
+            data_type: varchar
+            description: "Sesion en la que se realizo el evento"
           - name: CREATED_AT
+            data_type: timestamp_tz
+            description: "Fecha de creacion de evento de un usuario"
           - name: ORDER_ID
+            data_type: varchar
+            description: "Identificador de pedido para un evento"
           - name: _FIVETRAN_DELETED
           - name: _fivetran_synced
 
       - name: order_items
+        description: "Order especifica de la fuente de datos en crudo"
         loaded_at_field: _fivetran_synced
         columns:
           - name: ORDER_ID
+            data_type: varchar
+            description: "Identificador de pedido para un producto determinado"
           - name: PRODUCT_ID
+            data_type: varchar
+            description: "Identificador de un producto para una determinada orden"
           - name: QUANTITY
+            data_type: number
+            description: "Cantiad de un producto de una orden concreta"
           - name: _FIVETRAN_DELETED
           - name: _fivetran_synced
       
       - name: orders
+        description: "Tabla que contiene la informacion de todos los pedidos de la fuente de datos en crudo"
         loaded_at_field: _fivetran_synced
         columns:
           - name: ORDER_ID
+            data_type: varchar
+            description: "Identificador de una orden"
           - name: SHIPPING_SERVICE
+            data_type: varchar
+            description: "Compañia que hace el envio"
           - name: SHIPPING_COST
+            data_type: float
+            description: "Coste de envio para este pedido"
           - name: ADDRESS_ID
+            data_type: varchar
+            description: "Identificador de address para este pedido concreto"
           - name: CREATED_AT
+            data_type: timestamp_tz
+            description: "Fecha de creacion del pedido"
           - name: PROMO_ID
+            data_type: varchar
+            description: "Identificador de la promocion que se aplica a la orden"
           - name: ESTIMATED_DELIVERY_AT
+            data_type: timestamp_tz
+            description: "Fecha estimada de llegada del pedido"
           - name: ORDER_COST
+            data_type: float
+            description: "Coste del pedido"
           - name: USER_ID
+            data_type: varchar
+            description: "Identificador del usuario que realiza el pedido"
           - name: ORDER_TOTAL
+            data_type: float
+            description: "Valor total del pedido"
           - name: DELIVERED_AT
+            data_type: timestamp_tz
+            description: "Fecha en la que llega el pedido"
           - name: TRACKING_ID
+            data_type: varchar
+            description: "Identificador de seguimiento de un pedido"
           - name: STATUS
+            data_type: varchar
+            description: "Estado en el que se encuentra el pedido"
           - name: _FIVETRAN_DELETED
           - name: _fivetran_synced
     
       - name: products
+        description: "Tabla con registros de productos de la fuente de datos en crudo"
         loaded_at_field: _fivetran_synced
         columns:
-          - name: PRODUCT_ID  
+          - name: PRODUCT_ID
+            data_type: varchar
+            description: "Identificador de producto"  
           - name: PRICE
+            data_type: float
+            description: "Precio del producto"
           - name: NAME
+            data_type: varchar
+            description: "Nombre del producto"
           - name: INVENTORY
+            data_type: number
+            description: "Cantidad de producto"
           - name: _FIVETRAN_DELETED
           - name: _fivetran_synced
       
       - name: promos
+        description: "Tabla con las promos de una orden procedente de los datos en crudo"
         loaded_at_field: _fivetran_synced 
         columns:
-          - name: PROMO_ID  
+          - name: PROMO_ID
+            data_type: varchar
+            description: "Identificador de una promocion"  
           - name: DISCOUNT
+            data_type: number
+            description: "Valor numerico de descuento"
           - name: status
+            data_type: varchar
+            description: "Estado en el cual se encuentra una promocion"
           - name: _FIVETRAN_DELETED
           - name: _fivetran_synced
       
       - name: users
+        description: "Tabla que contiene la informacion de un usuario procedente de los datos en crudo"
         loaded_at_field: _fivetran_synced
         columns:
-          - name: USER_ID  
+          - name: USER_ID 
+            data_type: varchar
+            description: "Identificador de un usuario" 
           - name: UPDATED_AT
+            data_type: timestamp_tz
+            description: "Fecha de actualizacion de un usuario"
           - name: ADDRESS_ID
+            data_type: varchar
+            description: "Identificador de la direccion del usuario"
           - name: LAST_NAME
+            data_type: varchar
+            description: "Apellido del usuario"
           - name: CREATED_AT
+            data_type: timestamp_tz
+            description: "Fecha de creacion"
           - name: PHONE_NUMBER
+            data_type: varchar
+            description: "Numero de telefono de un usuario"
           - name: TOTAL_ORDERS
+            data_type: number
+            description: "Numero total de pedidos (vacio)"
           - name: FIRST_NAME
+            data_type: varchar
+            description: "Nombre del usuario"
           - name: EMAIL
+            data_type: varchar
+            description: "Email del usuario"
           - name: _FIVETRAN_DELETED
           - name: _fivetran_synced
