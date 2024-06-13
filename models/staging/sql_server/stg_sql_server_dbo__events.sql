@@ -21,7 +21,7 @@ renamed_casted AS (
         , user_id::varchar(64) AS user_id
         , event_type::varchar(64) AS event_type
         , decode(product_id,'','unknown',null,'unknown',product_id)::varchar(64) AS product_id -- si product_id es cadena vacia o null devuelve unknown, sino devuelve el product_id.
-        , decode(order_id,'','unknown',null,'unknown'order_id)::varchar(64) AS order_id -- si order_id es cadena vacia o null devuelve unknown, sino devuelve el order_id.
+        , decode(order_id,'','unknown',null,'unknown',order_id)::varchar(64) AS order_id -- si order_id es cadena vacia o null devuelve unknown, sino devuelve el order_id.
         , page_url::varchar(256) AS page_url
         , CASE -- Validación de urls
                 WHEN left(page_url, 8) = 'https://' THEN true
