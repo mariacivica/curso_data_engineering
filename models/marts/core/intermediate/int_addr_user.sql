@@ -41,7 +41,7 @@ all_addresses_without_duplicates AS
 )
 
 SELECT 
-     {{ my_generate_surrogate_key(['address_id']) }} AS ADDRESS_ID
+     address_id
     , ADDRESS::varchar(64) AS ADDRESS
     , COUNTRY::varchar(64) AS COUNTRY
     , STATE::varchar(64) AS STATE
