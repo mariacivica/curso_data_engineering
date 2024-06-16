@@ -26,7 +26,7 @@ renamed_casted AS (
         order_id::varchar(64) AS order_id -- aseguramos que cada registro tenga una única clave única para evitar posibles problemas futuros
         , user_id::varchar(64) AS user_id
         , address_id::varchar(64) AS address_id
-        , promo_id::varchar(64) AS promo_id
+        , {{ my_generate_surrogate_key(['promo_id']) }}::varchar(64) AS promo_id
         , CASE promo_id 
             WHEN 'instruction set' THEN 'Instruction Set Promo'
             WHEN 'Optional' THEN 'Optional Promo'

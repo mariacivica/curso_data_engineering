@@ -19,7 +19,7 @@ renamed_casted AS (
         address_id::varchar(64) AS address_id -- aseguramos que cada registro tenga una única clave única para evitar posibles problemas futuros
         , address::varchar(64) AS address
         , SPLIT_PART(address, ' ', 1)::varchar(64) AS address_number -- extrae el número de la calle
-        , SPLIT_PART(address, ' ', 2)::varchar(64) AS address_name -- extrae el nombre de la calle
+        , REGEXP_REPLACE(address, '^[^ ]+ ', '')::varchar(64) AS address_name -- extrae el nombre de la calle
         , country::varchar(64) AS country
         , state::varchar(64) AS state
         , zipcode::varchar(64) AS zipcode
