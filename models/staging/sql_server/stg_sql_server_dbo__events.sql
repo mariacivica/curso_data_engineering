@@ -1,17 +1,21 @@
---  Materializado en forma de vista ya que se pretende que los datos se actualicen 
---  automaticamente cada vez que se accede, por si hubiera cambios.
---  Se podría considerar cambiar a "table" si las transformaciones son costosas.
-{{
-  config(
-    materialized='view' 
-  )
-}}
+--  Incremental
 
---  Extracción de la fuente origen (tabla origen). 
+{{ config(
+    materialized='incremental',
+    unique_key = 'event_id'
+    ) 
+    }}
+
+   --  Extracción de la fuente origen (tabla origen). 
 WITH src_events AS (
     SELECT * 
     FROM {{source('sql_server', 'events')}}
-    ),
+
+
+    {% if is_incremental() %}
+        AND _fivetran_synced > (select max(date_load) from {{ this }}) 
+    {% endif %}
+),
 
 --  Transformaciones y conversiones.
 renamed_casted AS (
@@ -29,6 +33,7 @@ renamed_casted AS (
             END AS is_valid_page_url
         , CONVERT_TIMEZONE('UTC', created_at)::timestamp AS created_at_utc -- Conversión a UTC.
         , CONVERT_TIMEZONE('UTC', _fivetran_synced)::timestamp AS date_load -- Conversión a UTC.
+
     FROM src_events
     )
 

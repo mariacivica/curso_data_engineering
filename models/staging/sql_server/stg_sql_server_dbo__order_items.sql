@@ -7,8 +7,6 @@
   )
 }}
 
-
-
 WITH src_order_items AS (
     SELECT * 
     FROM {{source('sql_server', 'order_items')}}

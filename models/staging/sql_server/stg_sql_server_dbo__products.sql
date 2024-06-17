@@ -1,16 +1,8 @@
---  Materializado en forma de vista ya que se pretende que los datos se actualicen 
---  automaticamente cada vez que se accede, por si hubiera cambios.
---  Se podría considerar cambiar a "table" si las transformaciones son costosas.
-
-{{
-  config(
-    materialized='view'
-  )
-}}
+-- Snapshot porque es importante tener un seguimiento histórico de cambios en el precio (y en el inventario¿?)
 
 WITH src_products AS (
     SELECT * 
-    FROM {{source('sql_server', 'products')}}
+    FROM {{ ref('src_products_snapshot') }}
     ),
 
 renamed_casted AS (
