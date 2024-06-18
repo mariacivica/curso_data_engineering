@@ -1,4 +1,4 @@
--- Modelo 
+-- Modelo intermediate para unir order_items y orders
 
 {{ config(
     materialized='incremental',
@@ -85,11 +85,7 @@ int_orders as(
     -- measures
         a.quantity, -- cantidad de producto vendido
         d.price_usd as unit_price_usd, -- precio unitario del producto
-        (a.quantity * d.price_usd) as gross_line_sales_usd,   -- cantidad de producto * precio unitario
-
-        -- descuento total aplicado 
-        ((f.promo_discount/100) * (a.quantity*d.price_usd)) as discount_usd,
-
+    
         -- Costo total de producto para ese pedido
         (d.price_usd * a.quantity) as product_cost_usd, --10
         

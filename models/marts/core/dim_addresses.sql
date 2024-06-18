@@ -6,7 +6,7 @@ with stg_sql_server_dbo__addresses as(
 dim_addresses as(
   
     select
-        {{my_generate_surrogate_key(['address_id','address'])}} AS address_id,
+        address_id,
         address,
         address_number,
         address_name,

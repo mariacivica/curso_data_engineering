@@ -31,25 +31,13 @@ models:
         data_type: number
         description: the price of the product.
         
-      - name: gross_line_sales_usd
-        data_type: number
-        description: the total sale (quantity * unit_price_usd)
-
-      - name: discount_usd
-        data_type: number
-        description: the discount apllied to that product.
-
       - name: product_cost_usd
         data_type: number
-        description: the cost to obtain the product to the supplier-
+        description: the cost to obtain the product to the supplier.
 
       - name: shipping_line_usd
         data_type: number
         description: the revenue charge to the client.
-
-      - name: shipping_cost_usd
-        data_type: number
-        description: the cost that the shipping_service charge to the company.
 
       - name: status_order
         data_type: varchar

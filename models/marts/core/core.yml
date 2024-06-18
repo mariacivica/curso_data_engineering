@@ -33,7 +33,7 @@ models:
     columns:
       - name: address_id
         data_type: varchar
-        description: a surrogate key generated to the table through "address_id".
+        description: a primary key addresses.
         tests:
           - unique
           - not_null
@@ -68,16 +68,9 @@ models:
   - name: dim_products
     description: a dimensional table who shows the information of our products.
     columns:
-      - name: product_id_1
+      - name: product_id
         data_type: varchar
-        description: a surrogate key generated to our table through "product_id_1".
-        tests:
-          - unique
-          - not_null
-
-      - name: product_id_2
-        data_type: varchar
-        description: a primary key from the source database.
+        description: primary key products.
         tests:
           - unique
           - not_null
@@ -128,32 +121,13 @@ models:
   - name: dim_users
     description: a dimensional table who shows the information of our users.
     columns:
-      - name: date_key
-        data_type: varchar
-        description: a foreigh key to connect this table with the table "dim_dates".
-        tests:
-          - relationships:
-              to: ref('dim_date')
-              field: date_key
-
-      - name: user_id_1
-        data_type: varchar
-        description: a surrogate key generated to our table through "user_id".
-        tests:
-          - unique
-          - not_null
-
-      - name: user_id_2
+      - name: user_id
         data_type: varchar
         description: a primary key from the source database.
         tests:
           - unique
           - not_null
 
-      - name: address_id
-        data_type: varchar
-        description: a foreigh key to connect this table with the table "dim_addresses".
-        
       - name: full_name
         data_type: varchar
         description: Full name of the user (concat first_name and last_name).

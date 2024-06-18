@@ -6,8 +6,7 @@ with stg_sql_server_dbo__products as(
 dim_products as (
 
     select
-        {{my_generate_surrogate_key(['product_id','product_name'])}} AS product_id_1,
-        product_id AS product_id_2,
+        product_id,
         product_name,
         price_usd,
         inventory
