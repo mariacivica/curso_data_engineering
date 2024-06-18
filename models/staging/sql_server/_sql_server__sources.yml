@@ -200,3 +200,28 @@ sources:
             description: "Email del usuario"
           - name: _FIVETRAN_DELETED
           - name: _fivetran_synced
+      
+      - name: reviews
+        description: "Tabla con las reviews de productos procedente de los datos en crudo"
+        loaded_at_field: _fivetran_synced 
+        columns:
+          - name: REVIEW_ID
+            data_type: varchar
+            description: "Identificador de una reseña"  
+          - name: PRODUCT_ID
+            data_type: varchar
+            description: "Identificador de un producto que ha sido reseñado"
+          - name: QUALITY_RATING
+            data_type: number
+            description: "Calidad" 
+          - name: USABILITY_RATING
+            data_type: number
+            description: "Usabilidad"
+          - name: VALUE_FOR_MONEY_RATING
+            data_type: number
+            description: "Relacion calidad-precio"
+          - name: DELIVERY_SPEED_RATING
+            data_type: number
+            description: "Velocidad de entrega" 
+          - name: _FIVETRAN_DELETED
+          - name: _fivetran_synced

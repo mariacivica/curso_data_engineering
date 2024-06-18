@@ -254,3 +254,43 @@ models:
           - not_null
       - name: _FIVETRAN_DELETED
       - name: _fivetran_synced
+  
+  - name: stg_sql_server_dbo__reviews
+    description: "Tabla que contiene la informacion de una valoracion procedente de los datos en crudo"
+    columns:
+      - name: REVIEW_ID
+        data_type: varchar
+        description: "Identificador de una valoracion" 
+        tests:
+          - unique
+          - not_null
+      - name: PRODUCT_ID
+        data_type: varchar
+        description: "Identificador de producto"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__products')
+              field: PRODUCT_ID
+      - name: QUALITY_RATING
+        data_type: number
+        description: "Calidad"
+        tests:
+          - not_null
+      - name: USABILITY_RATING
+        data_type: number
+        description: "Usabilidad"
+        tests:
+          - not_null
+      - name: VALUE_FOR_MONEY_RATING
+        data_type: number
+        description: "Relacion calidad-precio"
+        tests:
+          - not_null
+      - name: DELIVERY_SPEED_RATING
+        data_type: number
+        description: "Velocidad de entrega"
+        tests:
+          - not_null
+      - name: _FIVETRAN_DELETED
+      - name: _fivetran_synced
