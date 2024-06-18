@@ -11,7 +11,7 @@ WITH src_reviews AS (
     FROM {{source('sql_server', 'reviews')}}
 
     {% if is_incremental() %}
-        AND _fivetran_synced > (select max(date_load) from {{ this }}) 
+    WHERE _fivetran_synced > (select max(date_load) from {{ this }}) 
     {% endif %}
 ),
 
