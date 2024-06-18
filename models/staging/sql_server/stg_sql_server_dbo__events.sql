@@ -13,7 +13,7 @@ WITH src_events AS (
 
 
     {% if is_incremental() %}
-        AND _fivetran_synced > (select max(date_load) from {{ this }}) 
+        WHERE _fivetran_synced > (select max(date_load) from {{ this }}) 
     {% endif %}
 ),
 
