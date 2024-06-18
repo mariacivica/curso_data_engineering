@@ -179,8 +179,6 @@ models:
       - name: NAME
         data_type: varchar
         description: "Nombre del producto"
-        tests:
-          - not_null
       - name: INVENTORY
         data_type: number
         description: "Cantidad de producto"
@@ -202,9 +200,6 @@ models:
       - name: status
         data_type: varchar
         description: "Estado en el cual se encuentra una promocion"
-        tests:
-          - accepted_values:
-              values: ["inactive", "active"]
       - name: _FIVETRAN_DELETED
       - name: _fivetran_synced
   

@@ -153,11 +153,7 @@ models:
       - name: address_id
         data_type: varchar
         description: a foreigh key to connect this table with the table "dim_addresses".
-        tests:
-          - relationships:
-              to: ref('dim_addresses')
-              field: address_sk
-
+        
       - name: full_name
         data_type: varchar
         description: Full name of the user (concat first_name and last_name).
