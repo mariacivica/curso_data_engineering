@@ -248,7 +248,7 @@ models:
         data_type: varchar
         description: a hash to identify when the incremental model was run.
 
-  - name: fact_orders
+  - name: fact_order
     description: fact table who consists of the measurements and metrics of the purchase (order) made by a customer.
     columns:
 
@@ -260,7 +260,7 @@ models:
         data_type: varchar
         description: a surrogate key construct using the columns "user_id", "order_id", "product_id"
       
-      - name: user_id_1
+      - name: user_id
         data_type: varchar
         description: a foreigh key to connect this table with the table "dim_customers".
 
@@ -276,21 +276,22 @@ models:
         data_type: varchar
         description: a foreigh key to connect this table with the table "dim_promos".
        
-      - name: product_id_
+      - name: product_id
         data_type: varchar
         description: a foreigh key to connect this table with the table "dim_products".
         
       - name: status_order
-        data_type: varchar
+        data_type: timestamp_ltz
         description: the status of an order
+
+      - name: status_change_date
+        data_type: varchar
+        description: Marca de tiempo que indica cuándo cambió el estado del pedido
+
 
       - name: quantity_sold
         data_type: number
         description: the quantity of a certain product sold (inside a order).
-
-      - name: gross_line_sales_usd
-        data_type: number
-        description: gross value of a sale (equal to quantity_sold * unit_price_usd)
 
       - name: discount_usd
         data_type: number
@@ -300,16 +301,72 @@ models:
         data_type: number
         description: weighted shipping revenue in usd per line of products in a given order.
 
+      - name: date_load
+        data_type: varchar
+        description: La última fecha de carga de los datos del pedido, calculada como el mayor de "order_items_load" y "orders_load".
+
+      - name: address
+        data_type: varchar
+        description: La dirección completa asociada con el pedido.
+
+      - name: address_number
+        data_type: varchar
+        description: El número de dirección asociado con el pedido.
+
+      - name: address_name
+        data_type: varchar
+        description: El nombre de la dirección asociado con el pedido.
+
+      - name: country
+        data_type: varchar
+        description: El país asociado con la dirección del pedido.
+
+      - name: state
+        data_type: varchar
+        description: El estado asociado con la dirección del pedido.
+
+      - name: zipcode
+        data_type: varchar
+        description: El código postal asociado con la dirección del pedido.
+
+      - name: product_name
+        data_type: varchar
+        description: El nombre del producto asociado con el pedido.
+
+      - name: inventory
+        data_type: number
+        description: El conteo de inventario del producto asociado con el pedido.
+
+      - name: promo_description
+        data_type: varchar
+        description: La descripción de la promoción aplicada al pedido.
+
+      - name: discount_unit
+        data_type: varchar
+        description: La unidad de descuento aplicada en la promoción.
+
+      - name: promo_status
+        data_type: varchar
+        description: El estado de la promoción aplicada al pedido.
+
+      - name: full_name
+        data_type: varchar
+        description: El nombre completo del usuario que realizó el pedido.
+
+      - name: email
+        data_type: varchar
+        description: El correo electrónico del usuario que realizó el pedido.
+
+      - name: phone_number
+        data_type: varchar
+        description: El número de teléfono del usuario que realizó el pedido.
+
       - name: product_cost_usd
         data_type: number
         description: the cost of an product based on the product_features table.
       - name: days_to_deliver
         data_type: number
         description: if the order was deliver, the metric calculate the number of days since the order's creation until the delivered date.
-
-      - name: deliver_precision_days
-        data_type: number
-        description: when a order is shipped to the customer, an estimated date for deliver is created. This metric compares the precison of the estimated deliver date with the actual date of the order deliver.
 
       - name: created_at_utc
         data_type: timestamp_ltz
@@ -318,6 +375,14 @@ models:
       - name: created_at_date
         data_type: date
         description: date extraction from the field "created_at_utc" Timestamp (UTC).
+
+      - name: estimated_delivery_at_utc
+        data_type: timestamp_ltz
+        description: Marca de tiempo que indica el tiempo de entrega estimado en Tiempo Universal Coordinado (UTC).
+
+      - name: delivered_at_utc
+        data_type: timestamp_ltz
+        description: Marca de tiempo que indica cuándo se entregó el pedido en Tiempo Universal Coordinado (UTC).
 
       - name: time_key
         data_type: varchar
