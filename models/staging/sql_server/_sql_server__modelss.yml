@@ -66,6 +66,9 @@ models:
       - name: SESSION_ID
         data_type: varchar
         description: "Sesion en la que se realizo el evento"
+      - name: created_at_utc_dma
+        data_type: varchar
+        description: "Fecha de creacion de evento de un usuario formato para coincidir con la dim_date mas adelante"
       - name: CREATED_AT_UTC
         data_type: timestamp_tz
         description: "Fecha de creacion de evento de un usuario"

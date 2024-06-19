@@ -3,9 +3,9 @@ with stg_sql_server_dbo__addresses as(
     select * from {{ ref('stg_sql_server_dbo__addresses') }}
 ),
 
-dim_addresses as(
+dim_addresses AS(
   
-    select
+    SELECT
         address_id,
         address,
         address_number,
@@ -13,7 +13,7 @@ dim_addresses as(
         country,
         state,
         zipcode,
-    from stg_sql_server_dbo__addresses
+    FROM stg_sql_server_dbo__addresses
 )
 
 select * from dim_addresses

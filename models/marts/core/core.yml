@@ -117,7 +117,7 @@ models:
           - not_null
           - accepted_values:
               values: ['active','inactive']
-
+  
   - name: dim_users
     description: a dimensional table who shows the information of our users.
     columns:
@@ -126,6 +126,12 @@ models:
         description: a primary key from the source database.
         tests:
           - unique
+          - not_null
+
+      - name: address_id
+        data_type: varchar
+        description: a key from the dim_addresses.
+        tests:
           - not_null
 
       - name: full_name
@@ -147,6 +153,43 @@ models:
       - name: updated_at_utc
         data_type: timestamp_ltz
         description: Timestamp indicating when the record was last updated, in UTC.
+
+  - name: dim_reviews
+    description: a dimensional table who shows the information of our reviews.
+    columns:
+      - name: review_id
+        data_type: varchar
+        description: a primary key from the source database.
+        tests:
+          - unique
+          - not_null
+
+      - name: product_id
+        data_type: varchar
+        description: a key from the dim_product.
+        tests:
+          - not_null
+
+      - name: QUALITY_RATING
+        data_type: number
+        description: "Calidad"
+        tests:
+          - not_null
+      - name: USABILITY_RATING
+        data_type: number
+        description: "Usabilidad"
+        tests:
+          - not_null
+      - name: VALUE_FOR_MONEY_RATING
+        data_type: number
+        description: "Relacion calidad-precio"
+        tests:
+          - not_null
+      - name: DELIVERY_SPEED_RATING
+        data_type: number
+        description: "Velocidad de entrega"
+        tests:
+          - not_null
 
   - name: fact_events
     description: fact table who consists of the measurements and metrics of the online user behaviour.
@@ -171,7 +214,7 @@ models:
               values: ['page_view', 'add_to_cart', 'checkout', 'package_shipped']
           - not_null
 
-      - name: product_id_1
+      - name: product_id
         data_type: varchar
         description: a foreigh key to connect this table with the table "dim_products".
 
@@ -189,13 +232,13 @@ models:
         data_type: varchar
         description: extracted time from the Timestamp column "created_at_utc" in Coordinated Universal Time (UTC) and converted to a key, for later join the time_table in the BI report.
 
-      - name: created_at_utc
+      - name: created_at_utc_dma
         data_type: timestamp
         description: timestamp indicating when the event was created (hour,minute,second).
 
-      - name: time
-        data_type: time
-        description: timestamp indicating when the event was created (hour,minute,second).
+      - name: day_of_month
+        data_type: number
+        description: Day of the month.
 
       - name: date_load
         data_type: varchar

@@ -1,11 +1,8 @@
--- Como esta dimension la utilizan varias tablas va dentro del core
--- Se crea una tabla "fechaa" que contiene una dimension de fechas 
--- luego selecciona columnas específicas relacionadas con dias, meses y trimestres de estas fechas.
--- La salida final será una tabla materializada que contiene las columnas seleccionadas en este rango de fechas.
+-- 
 
 {{ config(materialized='table') }}
 WITH fechaa AS (
-{{ dbt_date.get_date_dimension("2010-01-01", "2030-12-31") }}
+{{ dbt_date.get_date_dimension("2020-01-01", "2025-12-31") }}
 )
 
 Select  to_char(date_day, 'YYYYMMDD') AS date_key
@@ -16,3 +13,4 @@ Select  to_char(date_day, 'YYYYMMDD') AS date_key
 , month_of_year
 , quarter_of_year
 from fechaa
+order by date_day

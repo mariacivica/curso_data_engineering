@@ -31,6 +31,7 @@ renamed_casted AS (
                 WHEN left(page_url, 8) = 'https://' THEN true
                 ELSE FALSE
             END AS is_valid_page_url
+        , TO_CHAR(created_at, 'YYYY-MM-DD') AS created_at_utc_dma  -- saca la fecha para usarlo en la tabla de hechos events
         , CONVERT_TIMEZONE('UTC', created_at)::timestamp AS created_at_utc -- Conversión a UTC.
         , CONVERT_TIMEZONE('UTC', _fivetran_synced)::timestamp AS date_load -- Conversión a UTC.
 

@@ -1,3 +1,4 @@
+--Dimensión producto. Distintos productos, todos unicos (no se repiten)
 with stg_sql_server_dbo__products as(
     
     select * from {{ ref('stg_sql_server_dbo__products') }}

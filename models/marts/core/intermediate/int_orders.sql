@@ -26,6 +26,7 @@ stg_orders as (
 
 
 -- Combinación de orders con order_items
+-- cada vez que order_id y product_id cambien de estado 
 int_orders_2 as (
     select
 
@@ -75,19 +76,18 @@ int_count_orders_quantity as(
 -- Union de tablas
 int_orders as(
     select
-    --keys
+    --claves
         a.order_id,     --1
         a.user_id,
         a.address_id,
         a.product_id,
         a.promo_id,     --5
 
-    -- measures
         a.quantity, -- cantidad de producto vendido
         d.price_usd as unit_price_usd, -- precio unitario del producto
     
         -- Costo total de producto para ese pedido
-        (d.price_usd * a.quantity) as product_cost_usd, --10
+        (d.price_usd * a.quantity) as product_cost_usd, 
         
         -- costo total del envio * (proporción de la cantidad vendida en la línea de pedido actual en relación con la cantidad total vendida en la orden)
         -- costo del envío asignado a esa línea específica
@@ -98,7 +98,7 @@ int_orders as(
         a.shipping_service,                 
 
     --dates related
-        a.created_at_utc as created_at_utc,         --14                              
+        a.created_at_utc as created_at_utc,                                      
         a.estimated_delivery as estimated_delivery_at_utc,
         a.delivered_at_utc as delivered_at_utc,
         a.created_at_utc::date as created_at_date,                      
@@ -114,4 +114,4 @@ int_orders as(
     left join int_count_orders_quantity h on h.order_id = a.order_id
 )
 
-select * from int_orders order by 14  --ordenado por fecha de creación
+select * from int_orders order by 12  --ordenado por fecha de creación
