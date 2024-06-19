@@ -3,6 +3,7 @@
 WITH src_products AS (
     SELECT * 
     FROM {{ ref('src_products_snapshot') }}
+    WHERE DBT_VALID_TO IS NULL
     ),
 
 renamed_casted AS (
@@ -16,3 +17,4 @@ renamed_casted AS (
     )
 
 SELECT * FROM renamed_casted 
+
