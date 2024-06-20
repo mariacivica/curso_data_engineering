@@ -1,11 +1,17 @@
--- Dimension de reseñas, una reseña es unica pero un mismo producto puede tener distintas reseñas (!= ids)
+-- Tabla de hechos de reseñas, una reseña es unica pero un mismo producto puede tener distintas reseñas (!= ids)
+
+{{
+  config(
+    materialized='table'
+  )
+}}
 
 with stg_sql_server_dbo__reviews as(
     
     select * from {{ ref('stg_sql_server_dbo__reviews') }}
 ),
 
-dim_reviews as (
+fact_reviews as (
 
     select
         review_id,
@@ -17,4 +23,4 @@ dim_reviews as (
     from stg_sql_server_dbo__reviews   
 )
 
-select * from dim_reviews
+select * from fact_reviews

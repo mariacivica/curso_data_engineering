@@ -1,117 +1,73 @@
--- Modelo intermediate para unir order_items y orders
+-- Modelo intermediate para unir order_items products y orders.
+-- Combina la información de ventas por producto y los costos 
+-- asociados por pedido, lo que permite un análisis más completo 
+-- de las ventas y los costos 
 
-{{ config(
-    materialized='incremental',
-    unique_key = ['order_id','product_id'],
-    on_schema_change='fail',
-    tags = ["incremental_orders"],
-)
+{{
+  config(
+    materialized='table'
+  )
 }}
 
-with stg_order_items as (
-    select * from {{ ref('stg_sql_server_dbo__order_items') }}
-    
-    {% if is_incremental() %}
-	  where date_load > (select max(order_items_load) from {{ this }}) 
-    {% endif %}
-),
+WITH stg_order_items AS 
+(
+    SELECT *
+    FROM {{ ref("stg_sql_server_dbo__order_items") }}
 
-stg_orders as (
-    select * from {{ ref('stg_sql_server_dbo__orders') }}
-    
-    {% if is_incremental() %}
-	  where date_load > (select max(orders_load) from {{ this }}) 
-{% endif %}
 ),
 
 
--- Combinación de orders con order_items
--- cada vez que order_id y product_id cambien de estado 
-int_orders_2 as (
-    select
-
-        a.order_id,
-        b.user_id,
-        b.address_id,
-        a.product_id,
-        a.quantity,                                  
-        b.promo_id,
-        b.status_order,
-        b.shipping_service,
-        b.tracking_id,
-        b.created_at_utc,                                  
-        b.estimated_delivery,                       
-        b.delivered_at_utc,
-        a.date_load as order_items_load,
-        b.date_load as orders_load
-
-    from stg_sql_server_dbo__order_items as a
-    full outer join stg_sql_server_dbo__orders as b on b.order_id = a.order_id
-    order by 1
+stg_products AS 
+(
+    SELECT 
+        product_id,
+        price_usd
+    FROM {{ ref("stg_sql_server_dbo__products") }}
 ),
 
-
--- Consulta que agrupa las ventas por mes y calcula la cantidad total vendida por mes.
-int_summary_orders as(
-    select
-        date_trunc('month', created_at_utc) as month,
-        sum(quantity) as monthly_quantity
-    from int_orders_2
-    group by 1
+stg_orders AS 
+(
+    SELECT *
+    FROM {{ ref("stg_sql_server_dbo__orders") }}
 ),
 
--- Consulta que calcula el total de productos por pedido
-int_count_orders_quantity as( 
+-- Agrupa las ventas por product_id y calcula la cantidad total vendida y las ventas totales
+-- Uso la tabla de order_items para obtener la cantidad de productos vendidos y la tabla products para 
+-- obtener el precio de cada producto 
+total_sales_per_product AS (
+    SELECT 
+        oi.product_id,
+        p.price_usd,
+        SUM(oi.quantity) AS total_quantity_sold,
+        SUM(oi.quantity * p.price_usd) AS total_sales_usd
+    FROM stg_order_items oi
+    JOIN stg_products p ON oi.product_id = p.product_id
+    GROUP BY oi.product_id, p.price_usd
+),
 
-    select
-        order_id,
-        case when sum(quantity) <=0 then 1 
-        else sum(quantity) end as total_quantity_sold
-    from stg_sql_server_dbo__order_items
-    group by 1
-    order by 1
-), 
-
-
--- Union de tablas
-int_orders as(
-    select
-    --claves
-        a.order_id,     --1
-        a.user_id,
-        a.address_id,
-        a.product_id,
-        a.promo_id,     --5
-
-        a.quantity, -- cantidad de producto vendido
-        d.price_usd as unit_price_usd, -- precio unitario del producto
-    
-        -- Costo total de producto para ese pedido
-        (d.price_usd * a.quantity) as product_cost_usd, 
-        
-        -- costo total del envio * (proporción de la cantidad vendida en la línea de pedido actual en relación con la cantidad total vendida en la orden)
-        -- costo del envío asignado a esa línea específica
-        round(g.shipping_cost_usd*(a.quantity/h.total_quantity_sold) ,2) as shipping_line_usd,
-
-    --shipping_related
-        a.status_order,
-        a.shipping_service,                 
-
-    --dates related
-        a.created_at_utc as created_at_utc,                                      
-        a.estimated_delivery as estimated_delivery_at_utc,
-        a.delivered_at_utc as delivered_at_utc,
-        a.created_at_utc::date as created_at_date,                      
-        a.order_items_load,
-        a.orders_load,
-
-        '{{invocation_id}}' as batch_id
-          
-    from int_orders_2 a
-    left join stg_sql_server_dbo__products d on d.product_id = a.product_id
-    left join stg_sql_server_dbo__promos f on f.promo_id = a.promo_id
-    left join stg_sql_server_dbo__orders g on g.order_id = a.order_id
-    left join int_count_orders_quantity h on h.order_id = a.order_id
+-- Agrupa los costes por order_id y user_id calculando los costes totales de
+-- items, de envío y del pedido completo
+-- Uso  la tabla orders para obtener los costes de los items, de envío y el coste total de pedido 
+total_order_costs AS (
+    SELECT 
+        o.order_id,
+        o.user_id,
+        SUM(o.item_order_cost_usd) AS total_items_cost,
+        SUM(o.shipping_cost_usd) AS total_shipping_cost,
+        SUM(o.order_total_cost_usd) AS total_order_cost
+    FROM stg_orders o
+    GROUP BY o.order_id, o.user_id
 )
 
-select * from int_orders order by 12  --ordenado por fecha de creación
+SELECT 
+    tsp.product_id, -- ID de un único producto
+    tsp.price_usd, -- precio del producto
+    tsp.total_quantity_sold, -- la cantidad total de unidades vendidas del producto (suma quantity)
+    tsp.total_sales_usd, -- precio total generado por las ventas del producto 
+    toc.order_id, -- ID único del pedido
+    toc.user_id, -- ID único del usuario
+    toc.total_items_cost, -- Coste total de los items (del producto concreto, no de todos los != productos del pedido) en el pedido 
+    toc.total_shipping_cost, -- Coste total del envio del pedido (suma shipping_cost_usd) por cada pedido
+    toc.total_order_cost -- Coste total del pedido incluyendo coste de los items del pedido y el coste del envío
+FROM total_sales_per_product tsp
+JOIN total_order_costs toc ON toc.order_id = (SELECT MIN(order_id) FROM stg_order_items WHERE product_id = tsp.product_id)

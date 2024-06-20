@@ -2,9 +2,9 @@ version: 2
 
 sources:
 
-  - name: google_sheets # Nombre de la carpeta en el dbt
+  - name: stg_google_sheets__budget # Nombre del source
     schema: google_sheets # Nombre del esquema en el snowflake
-    database: ALUMNO29_DEV_BRONZE_DB # this is the name of our database
+    database: ALUMNO29_DEV_SILVER_DB # this is the name of our database
 
     quoting:
       database: false
