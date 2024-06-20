@@ -41,6 +41,8 @@ models:
     
     staging:
       +materialized: view
+      +docs:
+        node_color: "#A4A4A2"
       +database: "{{ env_var('DBT_ENVIRONMENTS') }}_SILVER_DB"
       google_sheets:
         +schema: google_sheets
@@ -49,6 +51,8 @@ models:
     
     marts:
       +materialized: table
+      +docs:
+        node_color: "#E6C602"
       +database: "{{ env_var('DBT_ENVIRONMENTS') }}_GOLD_DB"
       core:
         +schema: core
