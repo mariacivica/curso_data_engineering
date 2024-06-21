@@ -1,3 +1,6 @@
+-- Ayuda al departamento a entender tanto la popularidad como el impacto de cada producto, 
+-- lo que puede informar decisiones de marketing, mejoras de productos y estrategias comerciales.
+
 {{
   config(
     materialized='table'
