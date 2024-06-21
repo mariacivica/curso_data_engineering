@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: int_orders
+    description: "Combina la información de ventas por producto y los costos asociados por pedido."
+    columns:
+      - name: product_id
+        description: "ID de un único producto."
+      - name: price_usd
+        description: "Precio del producto."
+      - name: total_quantity_sold
+        description: "La cantidad total de unidades vendidas del producto."
+      - name: total_sales_usd
+        description: "El monto total generado por las ventas del producto."
+      - name: order_id
+        description: "ID único del pedido."
+      - name: user_id
+        description: "ID único del usuario que realizó el pedido."
+      - name: total_items_cost
+        description: "Costo total de los ítems en el pedido."
+      - name: total_shipping_cost
+        description: "Costo total del envío del pedido."
+      - name: total_order_cost
+        description: "Costo total del pedido, incluyendo el costo de los ítems y el costo del envío."

@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: ventas
+    description: "ventas"
+    columns:
+      - name: month
+        description: "mes"
+      - name: product_name
+        description: "Nombre del producto."
+      - name: total_budget_quantity
+        description: "."
+      - name: total_quantity_sold
+        description: "."
+      - name: total_budget_amount
+        description: "."
+      - name: total_sales_usd
+        description: "."
+      - name: dif_quantity
+        description: "."
+      - name: dif_sales
+        description: "."

@@ -20,8 +20,15 @@ sources:
       - name: budget
         loaded_at_field: _fivetran_synced
         columns:
-          - name: _row
+          - name: budget_id
+            data_type: varchar
+            description: "Identificador único para un tipo de budget"
           - name: product_id
+            data_type: varchar
+            description: "Identificador único para un tipo de producto"
           - name: quantity
-          - name: month
-          - name: _fivetran_synced
+            description: "Cantidad de un budget"
+          - name: date
+            data_type: timestamp_tz
+            description: "Fecha de la budget"
+          

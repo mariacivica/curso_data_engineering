@@ -1,0 +1,274 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: a dimensional table for our date dimension.
+    columns:
+    - name: date_key
+      data_type: varchar
+      description: Primary key generated with the format YYYYMMDD.
+
+    - name: date_day
+      data_type: date
+      description: Date of the record in a format YYYY-MM-DD.
+
+    - name: day_of_week
+      data_type: number
+      description: Day of the week.
+
+    - name: day_of_month
+      data_type: number
+      description: Day of the month.
+
+    - name: month_of_year
+      data_type: number
+      description: Month number of the year.
+
+    - name: quarter_of_year
+      data_type: number
+      description: Quarter number of the year.
+
+  - name: dim_addresses
+    description: a dimensional table who shows living addresses from the users/customers, and also the shipping address for orders.
+    columns:
+      - name: address_id
+        data_type: varchar
+        description: a primary key addresses.
+
+      - name: address
+        data_type: varchar
+        description: the address
+
+      - name: address_number
+        data_type: varchar
+        description: the address (street, number, apartment_no,...).
+
+      - name: address_name
+        data_type: varchar
+        description: the address (street, number, apartment_no,...).
+
+      - name: country
+        data_type: varchar
+        description: the country where an address is located.
+
+      - name: state
+        data_type: varchar
+        description: the state where an address is located.
+
+      - name: zipcode
+        data_type: varchar
+        description: the zipcode where an address is located.
+
+  - name: dim_products
+    description: a dimensional table who shows the information of our products.
+    columns:
+      - name: product_id
+        data_type: varchar
+        description: primary key products.
+
+      - name: product_name
+        data_type: varchar
+        description: Name of the product.
+
+      - name: price_usd
+        data_type: number
+        description: Unit price of the product in USD.
+
+      - name: inventory
+        data_type: number
+        description: inventory of products.
+
+  - name: dim_promos
+    description: a dimensional table who shows the information of our promotions.
+    columns:
+      - name: promo_id
+        data_type: varchar
+        description: a primary key from the source database.
+      
+      - name: promo_description
+        data_type: varchar
+        description: a name of the promo.
+
+      - name: discount_unit
+        data_type: float
+        description: the decimal value of a discount of a promotion (promo_discount_percent/100).
+
+      - name: promo_status
+        data_type: varchar
+        description: the status of a promotion.
+  
+  - name: dim_users
+    description: a dimensional table who shows the information of our users.
+    columns:
+      - name: user_id
+        data_type: varchar
+        description: a primary key from the source database.
+      
+      - name: address_id
+        data_type: varchar
+        description: a key from the dim_addresses.
+
+      - name: full_name
+        data_type: varchar
+        description: Full name of the user (concat first_name and last_name).
+
+      - name: email
+        data_type: varchar
+        description: Email address of the user.
+
+      - name: phone_number
+        data_type: varchar
+        description: Phone number of the user.
+
+      - name: created_at_utc
+        data_type: timestamp_ltz
+        description: Timestamp indicating when the user was created, in UTC.
+
+      - name: updated_at_utc
+        data_type: timestamp_ltz
+        description: Timestamp indicating when the record was last updated, in UTC.
+
+  - name: fact_reviews
+    description: a dimensional table who shows the information of our reviews.
+    columns:
+      - name: review_id
+        data_type: varchar
+        description: a primary key from the source database.
+
+      - name: product_id
+        data_type: varchar
+        description: a key from the dim_product.
+
+      - name: QUALITY_RATING
+        data_type: number
+        description: "Calidad"
+        
+      - name: USABILITY_RATING
+        data_type: number
+        description: "Usabilidad"
+        
+      - name: VALUE_FOR_MONEY_RATING
+        data_type: number
+        description: "Relacion calidad-precio"
+        
+      - name: DELIVERY_SPEED_RATING
+        data_type: number
+        description: "Velocidad de entrega"
+
+  - name: fact_events
+    description: Fact table consisting of measurements and metrics of online user behavior.
+    columns:
+      - name: event_id
+        data_type: varchar
+        description: Primary key from the source database. Each 'action' of the user has a unique event_id.
+
+      - name: session_id
+        data_type: varchar
+        description: Identifier of the session. A user in 1 session can interact in many ways (several event_ids).
+
+      - name: user_id
+        data_type: varchar
+        description: Identifier of the user associated with the event.
+
+      - name: event_type
+        data_type: varchar
+        description: Description of the event. Actions performed by the user.
+
+      - name: product_id
+        data_type: varchar
+        description: Foreign key to connect this table with the table "dim_products".
+
+      - name: order_id
+        data_type: varchar
+        description: Key that identifies an order.
+
+      - name: page_url
+        data_type: varchar
+        description: URL of the page where the event occurred.
+
+      - name: is_valid_page_url
+        data_type: varchar
+        description: Indicator whether the page URL is valid or not.
+
+      - name: created_at_utc_dma
+        data_type: timestamp
+        description: Timestamp indicating when the event was created (hour, minute, second).
+
+      - name: created_at_utc
+        data_type: timestamp
+        description: Timestamp indicating when the event was created (UTC).
+
+      - name: date_load
+        data_type: varchar
+        description: Timestamp indicating when the record was loaded into the bronze stage.
+
+  - name: budget
+    description: Fact table budget.
+    columns:
+      - name: budget_id
+        data_type: varchar
+        description: "Identificador único para un tipo de budget"
+      
+      - name: product_id
+        data_type: varchar
+        description: "Identificador único para un tipo de producto"
+      
+      - name: quantity
+        description: "Cantidad de un budget"
+      
+      - name: date
+        data_type: timestamp_tz
+        description: "Fecha de la budget"
+      
+      - name: date_load
+
+
+  - name: fact_order
+    description: fact table who consists of the measurements and metrics of the purchase (order) made by a customer.
+    columns:
+    - name: order_id
+      data_type: varchar
+      description: Surrogate key constructed using the columns "user_id", "order_id", "product_id".
+
+    - name: user_id
+      data_type: varchar
+      description: Foreign key to connect this table with the table "dim_customers".
+
+    - name: product_id
+      data_type: varchar
+      description: Foreign key to connect this table with the table "dim_products".
+
+    - name: total_quantity_sold
+      data_type: number
+      description: Total quantity of products sold within the order.
+
+    - name: total_sales_usd
+      data_type: number
+      description: Total sales revenue in USD for the order.
+
+    - name: total_items_cost
+      data_type: number
+      description: Total cost of all items in the order.
+
+    - name: total_shipping_cost
+      data_type: number
+      description: Total shipping cost for the order.
+
+    - name: total_order_cost
+      data_type: number
+      description: Total cost of the entire order (items + shipping).
+
+    - name: price_usd
+      data_type: number
+      description: Unit price of the product in USD.
+
+    - name: date_key
+      data_type: varchar
+      description: Foreign key to connect this table with the table "dim_date".
+
+    - name: date_load
+      data_type: varchar
+      description: Timestamp indicating the last data load timestamp for the order data.
+
+
+

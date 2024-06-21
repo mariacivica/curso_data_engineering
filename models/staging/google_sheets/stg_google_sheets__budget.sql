@@ -10,11 +10,11 @@ WITH src_budget AS (
 
 renamed_casted AS (
     SELECT
-        _row
-        , product_id
-        , quantity
-        , month
-        , CONVERT_TIMEZONE('UTC', _fivetran_synced) AS _fivetran_synced_utc
+        {{ my_generate_surrogate_key(['_row']) }}::varchar(64) AS budget_id
+        , product_id::varchar(64) AS product_id
+        , quantity::integer AS quantity
+        , month AS date
+        , CONVERT_TIMEZONE('UTC', _fivetran_synced)::timestamp AS date_load
 
     FROM src_budget
     )

@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: marketing
+    description: "Combina la información de reseñas de productos y las ventas asociadas, permitiendo un análisis más completo de las reseñas y los ingresos generados por producto."
+    columns:
+      - name: product_id
+        description: "ID de un único producto."
+      - name: product_name
+        description: "Nombre del producto."
+      - name: avg_quality_rating
+        description: "Promedio de las calificaciones de calidad del producto."
+      - name: avg_usability_rating
+        description: "Promedio de las calificaciones de usabilidad del producto."
+      - name: avg_value_for_money_rating
+        description: "Promedio de las calificaciones de relación calidad-precio del producto."
+      - name: avg_delivery_speed_rating
+        description: "Promedio de las calificaciones de velocidad de entrega del producto."
+      - name: total_sales
+        description: "Número total de ventas del producto."
+      - name: total_revenue
+        description: "Ingresos totales generados por las ventas del producto."
